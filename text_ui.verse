@@ -39,23 +39,6 @@ ui<public> := module:
                     if (WClass := set WidgetClassPerPlayer[Player] = MyWidgetClass{}):
                         Widget:canvas = WClass.CreateWidget()
                         PlayerUI.AddWidget(Widget);
-        RemoveUI<public>(Agent:agent):void=
-            if(Player := player[Agent],PlayerUI := GetPlayerUI[Player]):
-                if(WClass := WidgetClassPerPlayer[Player]):
-                    if(Canvas := WClass.GetCanvas[]):
-                        Print("Removing UI")
-                        set WidgetClassPerPlayer = RemoveKeyFromMap(WidgetClassPerPlayer,Player)
-                        PlayerUI.RemoveWidget(Canvas)
-
-        RemoveKeyFromMap(ExampleMap:[player]MyWidgetClass, ElementToRemove:player):[player]MyWidgetClass=
-            var NewMap:[player]MyWidgetClass = map{}
-            # ExampleMap から ElementToRemove 以外の複数のキーを結合して、NewMap にします
-            for (Key -> Value : ExampleMap, Key <> ElementToRemove):
-                set NewMap = ConcatenateMaps(NewMap, map{Key => Value})
-            return NewMap
-
-
-
     MyWidgetClass := class:
 
         var TextWidget:text_block = text_block{}

@@ -11,7 +11,7 @@ using { /Fortnite.com/Characters }
 # See https://dev.epicgames.com/documentation/en-us/uefn/create-your-own-device-in-verse for how to create a verse device.
 
 # A Verse-authored creative device that can be placed in a level
-ui<public> := module:
+ui_module<public> := module:
     text_ui<public> := class(creative_device):
 
         var WidgetClassPerPlayer: [player]widget_interface = map{}

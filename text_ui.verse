@@ -9,7 +9,7 @@ using {/Verse.org/Colors}
 # See https://dev.epicgames.com/documentation/en-us/uefn/create-your-own-device-in-verse for how to create a verse device.
 
 # A Verse-authored creative device that can be placed in a level
-module_name<public> := module:
+ui<public> := module:
     text_ui<public> := class(creative_device):
 
         var WidgetClassPerPlayer: [player]MyWidgetClass = map{}
@@ -17,32 +17,53 @@ module_name<public> := module:
         InitializeUI<public>():void=
             AllPlayers := GetPlayspace().GetPlayers()
             for(Player : AllPlayers):
-                if(not WidgetClassPerPlayer[Player]):
-                    if (WClass := set WidgetClassPerPlayer[Player] = MyWidgetClass{}):
-                        WClass.AddUI(Player)
+                AddUI(Player)
         
         UpdateText<public>(Agent:agent,Text:string):void=
-            if(Player := player[Agent], WClass := WidgetClassPerPlayer[Player]):
-                WClass.UpdateText(Text)
+            if(Player := player[Agent]):
+                if(WClass := WidgetClassPerPlayer[Player]):
+                    WClass.UpdateText(Text)
+                else:
+                    AddUI(Agent)
+                    if(WClass := WidgetClassPerPlayer[Player]):
+                        WClass.UpdateText(Text)
+
+            
         UpdateTextForAllPlayer<public>(Text:string):void=
             AllPlayers := GetPlayspace().GetPlayers()
             for(Player : AllPlayers):
+                UpdateText(Player,Text)
+        AddUI<public>(Agent:agent):void=
+            if(Player := player[Agent],PlayerUI := GetPlayerUI[Player]):
+                if(not WidgetClassPerPlayer[Player]):
+                    if (WClass := set WidgetClassPerPlayer[Player] = MyWidgetClass{}):
+                        Widget:canvas = WClass.CreateWidget()
+                        PlayerUI.AddWidget(Widget);
+        RemoveUI<public>(Agent:agent):void=
+            if(Player := player[Agent],PlayerUI := GetPlayerUI[Player]):
                 if(WClass := WidgetClassPerPlayer[Player]):
-                    WClass.UpdateText(Text)
+                    if(Canvas := WClass.GetCanvas[]):
+                        Print("Removing UI")
+                        set WidgetClassPerPlayer = RemoveKeyFromMap(WidgetClassPerPlayer,Player)
+                        PlayerUI.RemoveWidget(Canvas)
+
+        RemoveKeyFromMap(ExampleMap:[player]MyWidgetClass, ElementToRemove:player):[player]MyWidgetClass=
+            var NewMap:[player]MyWidgetClass = map{}
+            # ExampleMap から ElementToRemove 以外の複数のキーを結合して、NewMap にします
+            for (Key -> Value : ExampleMap, Key <> ElementToRemove):
+                set NewMap = ConcatenateMaps(NewMap, map{Key => Value})
+            return NewMap
+
 
 
     MyWidgetClass := class:
 
         var TextWidget:text_block = text_block{}
         TextToMessage<localizes>(Text:string):message="{Text}"
-
-        AddUI(Agent:agent):void=
-            if(Player := player[Agent], PlayerUI := GetPlayerUI[Player]):
-                Widget:canvas = CreateWidget(Agent)
-                PlayerUI.AddWidget(Widget)
-        CreateWidget(Agent:agent):canvas=
-            set TextWidget = text_block{}
-            MyCanvas: canvas = canvas:
+        var MyCanvas: canvas = canvas{}
+        CreateWidget():canvas=
+            set TextWidget = text_block{DefaultTextColor := NamedColors.White}
+            set MyCanvas = canvas:
                 Slots := array:
                     canvas_slot:
                         Anchors := anchors{Minimum := vector2{X:=0.5, Y:=0.85}, Maximum := vector2{X:=0.5, Y:=0.85}}
@@ -51,5 +72,6 @@ module_name<public> := module:
                         SizeToContent := true
                         Widget := TextWidget
             return MyCanvas
+        GetCanvas()<decides><transacts>:canvas=MyCanvas
         UpdateText(Text:string):void=
             TextWidget.SetText(TextToMessage(Text))

@@ -1,9 +1,10 @@
 # IwakenVerseToolkit
 
 ## 前提
-- UEFN (Unreal Editor for Fortnite)のVersion
+- UEFN (Unreal Editor for Fortnite)が使用可能
 
 # 導入手順
+
 - UEFNのMenuバーから[Verse]>[Open project in VSCode]を選択し、VSCodeを開く
 - VSCodeのMenuバーから[Terminal]>[New Terminal]から{Project Name}を選択
   - Terminal上の現在のディレクトリが`~/Fortnite Projects/{Project Name}/Plugins/{Project Name}/Content`の場所にいることを確認
@@ -17,7 +18,8 @@ UEFNのリビジョン管理に.gitフォルダを含まないようにする
 - Fortnite Projects/{Project Name}以下にある`.urcignore`ファイルを開く
 - `**/.git`を一行書き加える
 
-# OnlyUp
+# Sample
+## OnlyUp
 
 ![onlyup](https://github.com/iwaken71/IwakenVerseToolkit/assets/10010842/ada4e92c-dd3f-4022-8ed3-7bf3b125dc99)
 
@@ -34,4 +36,8 @@ UEFNのリビジョン管理に.gitフォルダを含まないようにする
 - EnterTrigger (mutator_zone)
 
 を選択し、代入する。
+
+## 遊び方
+
+- mutator_zoneに入ると、ユーザーの高さを表示する
 

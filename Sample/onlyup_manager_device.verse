@@ -7,36 +7,46 @@ using {IwakenVerseToolkit.ui_module}
 
 # See https://dev.epicgames.com/documentation/en-us/uefn/create-your-own-device-in-verse for how to create a verse device.
 
-# A Verse-authored creative device that can be placed in a level
-onlyup_manager_device := class(creative_device):
+sample_only_up := module:
+    # A Verse-authored creative device that can be placed in a level
+    onlyup_manager_device := class(creative_device):
 
-    @editable
-    TextUI:text_ui = text_ui{}
+        @editable
+        TextUIDevice:text_ui_device = text_ui_device{}
 
-    @editable
-    EnterTrigger:mutator_zone_device = mutator_zone_device{}
-    # Runs when the device is started in a running game
-    OnBegin<override>()<suspends>:void=
-        EnterTrigger.AgentEntersEvent.Subscribe(OnTriggered)
-        TextUI.InitializeUI()
+        @editable
+        EnterTrigger:mutator_zone_device = mutator_zone_device{}
+
+        @editable
+        FloorHeight:float = 0.0
+
+        var StartPerPlayer: [agent]logic = map{}
+        # Runs when the device is started in a running game
+        OnBegin<override>()<suspends>:void=
+            EnterTrigger.AgentEntersEvent.Subscribe(OnStartTriggered)
+            TextUIDevice.InitializeUI()
 
 
-    OnTriggered(Agent:agent):void=
-        spawn{StartLoop(Agent)}
+        OnStartTriggered(Agent:agent):void=
+            spawn{StartHeightDisplay(Agent)}
 
-    StartLoop(Agent: agent)<suspends>:void=
-        loop:
-            Sleep(0.1)
-            IntHeight := GetPlayerHeight(Agent)
-            TextUI.UpdateText(Agent,"{IntHeight}m")
-    
+        StartHeightDisplay(Agent: agent)<suspends>:void=
+            if(StartPerPlayer[Agent]?):
+                return
+            if(set StartPerPlayer[Agent] = true):
+                loop:
+                    Sleep(0.1)
+                    IntHeight := GetPlayerHeight(Agent)
+                    TextUIDevice.UpdateText(Agent,"{IntHeight}m")
 
-    CmToM(CM:float)<decides><transacts>:float = 
-        return CM / 100.0
-    
-    GetPlayerHeight(Agent:agent):int=
-        if (FortniteCharacter : fort_character = Agent.GetFortCharacter[]):
-            if(Height := CmToM[FortniteCharacter.GetTransform().Translation.Z]):
-                if(IntHeight := Floor[Height]):
-                    return IntHeight
-        return 0
+        CmToMeter(CM:float)<decides><transacts>:float =
+            return CM / 100.0
+
+        GetPlayerHeight(Agent:agent):int=
+            if:
+                FortniteCharacter : fort_character = Agent.GetFortCharacter[]
+                Height := CmToMeter[FortniteCharacter.GetTransform().Translation.Z - FloorHeight]
+                IntHeight := Floor[Height]
+            then:
+                return IntHeight
+            return 0

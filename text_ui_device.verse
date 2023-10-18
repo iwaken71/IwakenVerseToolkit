@@ -12,40 +12,41 @@ using { /Fortnite.com/Characters }
 
 # A Verse-authored creative device that can be placed in a level
 ui_module<public> := module:
-    text_ui<public> := class(creative_device):
+    text_ui_device<public> := class(creative_device):
 
-        var WidgetClassPerPlayer: [player]widget_interface = map{}
+        var WidgetClassPerPlayer: [player]one_text_canvas = map{}
 
         InitializeUI<public>():void=
-            AllPlayers := GetPlayspace().GetPlayers()
-            for(Player : AllPlayers):
+            for(Player : GetPlayspace().GetPlayers()):
                 AddUI(Player)
-        
+        AddUI<public>(Agent:agent):void=
+            if:
+                Player := player[Agent]
+                PlayerUI := GetPlayerUI[Player]
+                not WidgetClassPerPlayer[Player]
+                WClass := set WidgetClassPerPlayer[Player] = one_text_canvas{}
+            then:
+                Widget:canvas = WClass.CreateCanvas()
+                PlayerUI.AddWidget(Widget)
+
         UpdateText<public>(Agent:agent,Text:string):void=
             if(Player := player[Agent]):
                 if(WClass := WidgetClassPerPlayer[Player]):
                     WClass.UpdateText(Text)
-                else:
-                    AddUI(Agent)
-                    if(WClass := WidgetClassPerPlayer[Player]):
-                        WClass.UpdateText(Text)
-            
+
         UpdateTextForAllPlayer<public>(Text:string):void=
             AllPlayers := GetPlayspace().GetPlayers()
             for(Player : AllPlayers):
                 UpdateText(Player,Text)
-        AddUI<public>(Agent:agent):void=
-            if(Player := player[Agent],PlayerUI := GetPlayerUI[Player]):
-                if(not WidgetClassPerPlayer[Player]):
-                    if (WClass := set WidgetClassPerPlayer[Player] = MyWidgetClass{}):
-                        Widget:canvas = WClass.CreateWidget()
-                        PlayerUI.AddWidget(Widget);
-    MyWidgetClass := class(widget_interface):
+
+    one_text_canvas := class():
 
         var TextWidget:text_block = text_block{}
-        TextToMessage<localizes>(Text:string):message="{Text}"
         var MyCanvas: canvas = canvas{}
-        CreateWidget<override>():canvas=
+
+        TextToMessage<localizes>(Text:string):message = "{Text}"
+        
+        CreateCanvas():canvas=
             set TextWidget = text_block{DefaultTextColor := NamedColors.White}
             set MyCanvas = canvas:
                 Slots := array:
@@ -56,12 +57,6 @@ ui_module<public> := module:
                         SizeToContent := true
                         Widget := TextWidget
             return MyCanvas
-        GetCanvas()<decides><transacts>:canvas=MyCanvas
-        UpdateText<override>(Text:string):void=
+        GetCanvas()<decides><transacts>:canvas = MyCanvas
+        UpdateText(Text:string):void=
             TextWidget.SetText(TextToMessage(Text))
-
-    widget_interface := interface():
-        CreateWidget():canvas
-        UpdateText(Text:string):void
-
-    

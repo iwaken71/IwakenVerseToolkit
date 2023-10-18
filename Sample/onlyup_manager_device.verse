@@ -24,18 +24,19 @@ sample_only_up := module:
         # Runs when the device is started in a running game
         OnBegin<override>()<suspends>:void=
             EnterTrigger.AgentEntersEvent.Subscribe(OnStartTriggered)
-            TextUIDevice.InitializeUI()
-
 
         OnStartTriggered(Agent:agent):void=
             spawn{StartHeightDisplay(Agent)}
 
         StartHeightDisplay(Agent: agent)<suspends>:void=
+            # 2回目以降は処理しない
             if(StartPerPlayer[Agent]?):
                 return
+            # 初めてのゾーン内であれば処理する
             if(set StartPerPlayer[Agent] = true):
+                TextUIDevice.AddUI(Agent) # UIの付与
                 loop:
-                    Sleep(0.1)
+                    Sleep(0.1) # 0.1秒待つ
                     IntHeight := GetPlayerHeight(Agent)
                     TextUIDevice.UpdateText(Agent,"{IntHeight}m")
 

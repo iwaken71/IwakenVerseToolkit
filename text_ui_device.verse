@@ -16,9 +16,6 @@ ui_module<public> := module:
 
         var WidgetClassPerPlayer: [player]one_text_canvas = map{}
 
-        InitializeUI<public>():void=
-            for(Player : GetPlayspace().GetPlayers()):
-                AddUI(Player)
         AddUI<public>(Agent:agent):void=
             if:
                 Player := player[Agent]
@@ -28,15 +25,18 @@ ui_module<public> := module:
             then:
                 Widget:canvas = WClass.CreateCanvas()
                 PlayerUI.AddWidget(Widget)
+        
+        
+        AddUIForAllPlayer<public>():void=
+            for(Player : GetPlayspace().GetPlayers()):
+                AddUI(Player)
 
         UpdateText<public>(Agent:agent,Text:string):void=
-            if(Player := player[Agent]):
-                if(WClass := WidgetClassPerPlayer[Player]):
-                    WClass.UpdateText(Text)
+            if(Player := player[Agent],WClass := WidgetClassPerPlayer[Player]):
+                WClass.UpdateText(Text)
 
         UpdateTextForAllPlayer<public>(Text:string):void=
-            AllPlayers := GetPlayspace().GetPlayers()
-            for(Player : AllPlayers):
+            for(Player : GetPlayspace().GetPlayers()):
                 UpdateText(Player,Text)
 
     one_text_canvas := class():

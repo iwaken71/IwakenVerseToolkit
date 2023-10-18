@@ -40,7 +40,7 @@ UEFNのリビジョン管理に.gitフォルダを含まないようにする
 
 https://github.com/iwaken71/IwakenVerseToolkit/releases/tag/OnlyUpSample
 
-![onlyup](https://github.com/iwaken71/IwakenVerseToolkit/assets/10010842/ada4e92c-dd3f-4022-8ed3-7bf3b125dc99)
+![onlyup](https://github.com/iwaken71/IwakenVerseToolkit/assets/10010842/1070509c-f14c-4849-9d52-342b1e4fe239)
 
 ## 手順
 

@@ -5,6 +5,14 @@
 
 # 導入手順
 
+## インストール方法
+
+- git cloneのやり方
+- Download Zipのやり方
+
+どちから一方で大丈夫です。
+また、UEFNのリビジョン管理に.gitフォルダを含まないようにするために.urcignoreファイルの設定も説明します。
+
 ### git cloneのやり方
 - UEFNのMenuバーから[Verse]>[Open project in VSCode]を選択し、VSCodeを開く
 - VSCodeのMenuバーから[Terminal]>[New Terminal]から{Project Name}を選択

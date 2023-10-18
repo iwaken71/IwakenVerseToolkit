@@ -5,10 +5,19 @@
 
 # 導入手順
 
+### git cloneのやり方
 - UEFNのMenuバーから[Verse]>[Open project in VSCode]を選択し、VSCodeを開く
 - VSCodeのMenuバーから[Terminal]>[New Terminal]から{Project Name}を選択
   - Terminal上の現在のディレクトリが`~/Fortnite Projects/{Project Name}/Plugins/{Project Name}/Content`の場所にいることを確認
 - `git clone https://github.com/iwaken71/IwakenVerseToolkit.git`を実行
+- UEFNのMenuバーから[Verse]>[Build Verse Code]を選択
+- UEFNのContent/CreativeDevices以下にファイルが存在することを確認
+### Download Zipでのやり方
+
+- [Githubページ](https://github.com/iwaken71/IwakenVerseToolkit/)の[Code]>[Download Zip]をクリック
+- IwakenVerseToolkit-master.zipを展開
+- 1つ下の階層の「IwakenVerseToolkit-master」ディレクトリを「IwakenVerseToolkit」へ名前を変更 (★重要)
+- ``~/Fortnite Projects/{Project Name}/Plugins/{Project Name}/Content`以下に「IwakenVerseToolkit」ディレクトリを移動
 - UEFNのMenuバーから[Verse]>[Build Verse Code]を選択
 - UEFNのContent/CreativeDevices以下にファイルが存在することを確認
 
@@ -18,15 +27,17 @@ UEFNのリビジョン管理に.gitフォルダを含まないようにする
 - Fortnite Projects/{Project Name}以下にある`.urcignore`ファイルを開く
 - `**/.git`を一行書き加える
 
-# Sample
+# Sampleプロジェクト
 ## OnlyUp
+
+https://github.com/iwaken71/IwakenVerseToolkit/releases/tag/OnlyUpSample
 
 ![onlyup](https://github.com/iwaken71/IwakenVerseToolkit/assets/10010842/ada4e92c-dd3f-4022-8ed3-7bf3b125dc99)
 
 ## 手順
 
 - onlyup_manager_device
-- text_ui
+- text_ui_device
 - mutator_zone (Fortnite/Devices以下)
 を、レベル上に配置
 
@@ -34,6 +45,7 @@ UEFNのリビジョン管理に.gitフォルダを含まないようにする
 
 - TextuUI
 - EnterTrigger (mutator_zone)
+- FloorHeight
 
 を選択し、代入する。
 

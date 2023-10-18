@@ -17,7 +17,7 @@
 - [Githubページ](https://github.com/iwaken71/IwakenVerseToolkit/)の[Code]>[Download Zip]をクリック
 - IwakenVerseToolkit-master.zipを展開
 - 1つ下の階層の「IwakenVerseToolkit-master」ディレクトリを「IwakenVerseToolkit」へ名前を変更 (★重要)
-- ``~/Fortnite Projects/{Project Name}/Plugins/{Project Name}/Content`以下に「IwakenVerseToolkit」ディレクトリを移動
+- `~/Fortnite Projects/{Project Name}/Plugins/{Project Name}/Content`以下に「IwakenVerseToolkit」ディレクトリを移動
 - UEFNのMenuバーから[Verse]>[Build Verse Code]を選択
 - UEFNのContent/CreativeDevices以下にファイルが存在することを確認
 

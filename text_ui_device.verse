@@ -2,13 +2,8 @@ using {/Fortnite.com/Devices }
 using {/Fortnite.com/UI}
 using {/UnrealEngine.com/Temporary/UI}
 using {/UnrealEngine.com/Temporary/SpatialMath}
-using {/Verse.org/Assets}
-using {/Verse.org/Simulation}
 using {/Verse.org/Colors}
-using { /Fortnite.com/Playspaces }
-using { /Fortnite.com/Characters }
-
-# See https://dev.epicgames.com/documentation/en-us/uefn/create-your-own-device-in-verse for how to create a verse device.
+using {/Verse.org/Simulation}
 
 # A Verse-authored creative device that can be placed in a level
 ui_module<public> := module:
@@ -25,8 +20,7 @@ ui_module<public> := module:
             then:
                 Widget:canvas = WClass.CreateCanvas()
                 PlayerUI.AddWidget(Widget)
-        
-        
+
         AddUIForAllPlayer<public>():void=
             for(Player : GetPlayspace().GetPlayers()):
                 AddUI(Player)
@@ -44,8 +38,8 @@ ui_module<public> := module:
         var TextWidget:text_block = text_block{}
         var MyCanvas: canvas = canvas{}
 
-        TextToMessage<localizes>(Text:string):message = "{Text}"
-        
+        StringToMessage<localizes>(Text:string):message = "{Text}"
+
         CreateCanvas():canvas=
             set TextWidget = text_block{DefaultTextColor := NamedColors.White}
             set MyCanvas = canvas:
@@ -59,4 +53,4 @@ ui_module<public> := module:
             return MyCanvas
         GetCanvas()<decides><transacts>:canvas = MyCanvas
         UpdateText(Text:string):void=
-            TextWidget.SetText(TextToMessage(Text))
+            TextWidget.SetText(StringToMessage(Text))

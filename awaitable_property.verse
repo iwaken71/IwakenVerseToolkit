@@ -6,7 +6,7 @@ using { /Verse.org/Concurrency}
 
 awaitable_property_module<public> := module:
     read_only_awaitable_property_interface<public>(t: type) := interface(awaitable(t)):
-        GetValue<public>()<transacts><decides>:t
+        GetValue<public>():t
     awaitable_property_interface<public>(t: type) := interface(read_only_awaitable_property_interface(t)):
         SetValue<public>(t2:t):void
 
@@ -16,7 +16,7 @@ awaitable_property_module<public> := module:
     #     ChangeEvent:event(t) = event(t){}
     #     SetValue<override>(InputValue:t):void=
     #         ChangeEvent.Signal(InputValue)
-    #     GetValue<override>()<decides><transacts>:t=
+    #     GetValue<override>():t=
     #         return Value
     #     Await<override>()<suspends>:t=
     #         return ChangeEvent.Await()
@@ -28,8 +28,10 @@ awaitable_property_module<public> := module:
             if(not Value = InputValue):
                 set Value = InputValue
                 ChangeEvent.Signal(InputValue)
-        GetValue<override>()<decides><transacts>:int=
+        GetValue<override>():int=
             return Value
+        AddValue<public>(InputValue:int):void=
+            SetValue(Value + InputValue)
         Await<override>()<suspends>:int=
             return ChangeEvent.Await()
 
@@ -40,7 +42,7 @@ awaitable_property_module<public> := module:
             if(not Value = InputValue):
                 set Value = InputValue
                 ChangeEvent.Signal(InputValue)
-        GetValue<override>()<decides><transacts>:string=
+        GetValue<override>():string=
             return Value
         Await<override>()<suspends>:string=
             return ChangeEvent.Await()
@@ -52,7 +54,7 @@ awaitable_property_module<public> := module:
             if(not Value = InputValue):
                 set Value = InputValue
                 ChangeEvent.Signal(InputValue)
-        GetValue<override>()<decides><transacts>:float=
+        GetValue<override>():float=
             return Value
         Await<override>()<suspends>:float=
             return ChangeEvent.Await()
